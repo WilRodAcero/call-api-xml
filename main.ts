@@ -25,7 +25,7 @@ export class ServiceXML {
             const modifiedWsdlXml = builder.buildObject(parsedWsdl);
 
             // Realiza la solicitud POST con el contenido modificado y esperar su respuesta
-            const responseParsedZVGT = await this.makePostRequest('http://tayqlpasqas.sap.taylor.cl:8000/sap/bc/srt/rfc/sap/zws_fact_de_1003_v1/400/zws_fact_de_1003_v1/zws_fact_de_1003_v1', modifiedWsdlXml);
+            const responseParsedZVGT = await this.makePostRequest(`${process.env.URL}`, modifiedWsdlXml);
 
             console.log("🚀 response:", responseParsedZVGT)
         } catch (error) {
@@ -58,13 +58,13 @@ export class ServiceXML {
             }
 
             const response = await axios.post(url, xmlData, { headers: headers })
-            return await this.parseResponseZVGT(response);
+            return await this.parseResponse(response);
         } catch (error) {
             console.error('Error request post:', error);
         }
     }
 
-    private async parseResponseZVGT(response): Promise<any> {
+    private async parseResponse(response): Promise<any> {
         const parser = new xml2js.Parser({ explicitArray: false });
         const parsedWsdl = await parser.parseStringPromise(response.data);
 
